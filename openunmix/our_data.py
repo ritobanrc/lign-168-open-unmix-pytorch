@@ -57,9 +57,10 @@ class ESMUC_Dataset_Isolated(data.UnmixDataset):
         info = data.load_info(file)      
         audio, sr = data.load_audio(file)
 
-        length = min(audio.shape[1], sr*5)
-        
-        audio = audio[0:1, :length]
+        length = 5*sr
+        start = random.randint(0, audio.shape[1] - 5*sr)
+                
+        audio = audio[0:1, start:(start + length)]
     
         shift = random.choice(intervals)
         mix = gen_overlaid_data(shift, audio, sr)

@@ -90,7 +90,7 @@ def main():
     parser.add_argument(
         "--target",
         type=str,
-        default="vocals",
+        default="lowervoice",
         help="target source (will be passed to the dataset)",
     )
 
@@ -122,7 +122,7 @@ def main():
     # Training Parameters
     parser.add_argument("--epochs", type=int, default=1000)
     parser.add_argument("--batch-size", type=int, default=16)
-    parser.add_argument("--lr", type=float, default=0.001, help="learning rate, defaults to 1e-3")
+    parser.add_argument("--lr", type=float, default=0.01, help="learning rate, defaults to 1e-3")
     parser.add_argument(
         "--patience",
         type=int,
@@ -198,6 +198,7 @@ def main():
     )
 
     args, _ = parser.parse_known_args()
+    # args.checkpoint = "./open-unmix/"
 
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     print("Using GPU:", use_cuda)
