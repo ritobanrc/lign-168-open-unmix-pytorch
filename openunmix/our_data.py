@@ -42,7 +42,6 @@ class ESMUC_Dataset_Isolated(data.UnmixDataset):
         random.seed(0)        
         self.matching_files = glob.glob(os.path.join(self.root, pattern))
         random.shuffle(self.matching_files)
-        
         count = len(self.matching_files)
         valid_count = math.ceil(0.1 * count)
         if split == 'train':
