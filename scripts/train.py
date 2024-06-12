@@ -16,6 +16,7 @@ from openunmix import data
 from openunmix import model
 from openunmix import utils
 from openunmix import transforms
+from openunmix import our_data
 
 tqdm.monitor_interval = 0
 
@@ -117,12 +118,7 @@ def main():
     )
     parser.add_argument("--model", type=str, help="Name or path of pretrained model to fine-tune")
     parser.add_argument("--checkpoint", type=str, help="Path of checkpoint to resume training")
-    parser.add_argument(
-        "--audio-backend",
-        type=str,
-        default="soundfile",
-        help="Set torchaudio backend (`sox_io` or `soundfile`",
-    )
+
 
     # Training Parameters
     parser.add_argument("--epochs", type=int, default=1000)
@@ -204,7 +200,6 @@ def main():
 
     args, _ = parser.parse_known_args()
 
-    torchaudio.set_audio_backend(args.audio_backend)
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     print("Using GPU:", use_cuda)
     dataloader_kwargs = {"num_workers": args.nb_workers, "pin_memory": True} if use_cuda else {}
@@ -219,12 +214,17 @@ def main():
 
     device = torch.device("cuda" if use_cuda else "cpu")
 
-    train_dataset, valid_dataset, args = data.load_datasets(parser, args)
+    # train_dataset, valid_dataset, args = data.load_datasets(parser, args)
+    train_dataset = our_data.ESMUC_Dataset_Isolated("~/ESMUC_dataset", split='train')
+    valid_dataset = our_data.ESMUC_Dataset_Isolated("~/ESMUC_dataset", split='train')
 
+    
     # create output dir if not exist
     target_path = Path(args.output)
     target_path.mkdir(parents=True, exist_ok=True)
 
+
+    # TODO: CHANGE THIS
     train_sampler = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=True, **dataloader_kwargs
     )

@@ -22,8 +22,6 @@ def load_info(path: str) -> dict:
 
     """
     # get length of file in samples
-    if torchaudio.get_audio_backend() == "sox":
-        raise RuntimeError("Deprecated backend is not supported")
 
     info = {}
     si = torchaudio.info(str(path))
