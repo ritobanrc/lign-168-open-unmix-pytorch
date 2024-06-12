@@ -53,7 +53,7 @@ def valid(args, unmix, encoder, device, valid_sampler):
             losses.update(loss.item(), Y.size(1))
         return losses.avg
 
-
+"""
 def get_statistics(args, encoder, dataset):
     encoder = copy.deepcopy(encoder).to("cpu")
     scaler = sklearn.preprocessing.StandardScaler()
@@ -82,6 +82,60 @@ def get_statistics(args, encoder, dataset):
     # set inital input scaler values
     std = np.maximum(scaler.scale_, 1e-4 * np.max(scaler.scale_))
     return scaler.mean_, std
+""" # TRY THE CHATGPT written GPU VERSION NEXT TIME
+
+def get_statistics(args, encoder, dataset):
+    # Move the encoder to GPU
+    encoder = copy.deepcopy(encoder).to("cuda")
+
+    dataset_scaler = copy.deepcopy(dataset)
+    if isinstance(dataset_scaler, data.SourceFolderDataset):
+        dataset_scaler.random_chunks = False
+    else:
+        dataset_scaler.random_chunks = False
+        dataset_scaler.seq_duration = None
+
+    dataset_scaler.samples_per_track = 1
+    dataset_scaler.augmentations = None
+    dataset_scaler.random_track_mix = False
+    dataset_scaler.random_interferer_mix = False
+
+    pbar = tqdm.tqdm(range(len(dataset_scaler)), disable=args.quiet)
+
+    # Accumulators for mean and standard deviation
+    total_sum = None
+    total_sum_of_squares = None
+    total_samples = 0
+
+    for ind in pbar:
+        x, y = dataset_scaler[ind]
+        pbar.set_description("Compute dataset statistics")
+        
+        # Move input tensor to GPU
+        x = x.to("cuda")
+        
+        # Encode and process the tensor
+        X = encoder(x[None, ...]).mean(1, keepdim=False).permute(0, 2, 1)
+        
+        # Update accumulators
+        if total_sum is None:
+            total_sum = torch.sum(X, dim=0)
+            total_sum_of_squares = torch.sum(X ** 2, dim=0)
+        else:
+            total_sum += torch.sum(X, dim=0)
+            total_sum_of_squares += torch.sum(X ** 2, dim=0)
+        
+        total_samples += X.shape[0]
+
+    # Compute mean and standard deviation
+    mean = total_sum / total_samples
+    std = torch.sqrt(total_sum_of_squares / total_samples - mean ** 2)
+    
+    return mean, std
+
+# Use the mean and std to standardize any new data
+def standardize(data, mean, std):
+    return (data - mean) / std
 
 
 def main():
@@ -174,7 +228,7 @@ def main():
     parser.add_argument(
         "--nb-channels",
         type=int,
-        default=2,
+        default=1,
         help="set number of channels for model (1, 2)",
     )
     parser.add_argument(
@@ -224,7 +278,6 @@ def main():
     target_path.mkdir(parents=True, exist_ok=True)
 
 
-    # TODO: CHANGE THIS
     train_sampler = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=True, **dataloader_kwargs
     )
