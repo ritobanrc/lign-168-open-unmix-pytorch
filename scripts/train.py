@@ -53,36 +53,6 @@ def valid(args, unmix, encoder, device, valid_sampler):
             losses.update(loss.item(), Y.size(1))
         return losses.avg
 
-"""
-def get_statistics(args, encoder, dataset):
-    encoder = copy.deepcopy(encoder).to("cpu")
-    scaler = sklearn.preprocessing.StandardScaler()
-
-    dataset_scaler = copy.deepcopy(dataset)
-    if isinstance(dataset_scaler, data.SourceFolderDataset):
-        dataset_scaler.random_chunks = False
-    else:
-        dataset_scaler.random_chunks = False
-        dataset_scaler.seq_duration = None
-
-    dataset_scaler.samples_per_track = 1
-    dataset_scaler.augmentations = None
-    dataset_scaler.random_track_mix = False
-    dataset_scaler.random_interferer_mix = False
-
-    pbar = tqdm.tqdm(range(len(dataset_scaler)), disable=args.quiet)
-    for ind in pbar:
-        x, y = dataset_scaler[ind]
-        pbar.set_description("Compute dataset statistics")
-        # downmix to mono channel
-        X = encoder(x[None, ...]).mean(1, keepdim=False).permute(0, 2, 1)
-
-        scaler.partial_fit(np.squeeze(X))
-
-    # set inital input scaler values
-    std = np.maximum(scaler.scale_, 1e-4 * np.max(scaler.scale_))
-    return scaler.mean_, std
-""" # TRY THE CHATGPT written GPU VERSION NEXT TIME
 
 def get_statistics(args, encoder, dataset):
     # Move the encoder to GPU
