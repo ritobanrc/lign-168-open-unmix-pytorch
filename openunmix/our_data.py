@@ -1,3 +1,7 @@
+"""
+Module to load our datasets -- namely ESMUC
+"""
+
 import torch
 import torchaudio
 import random
@@ -18,6 +22,9 @@ octave = 12
 intervals = [major_third, perfect_fourth, perfect_fifth, major_sixth, octave]
 
 def gen_overlaid_data(interval, data, sr):
+    """
+    Takes `data` pitch shifts it up by `interval` semitones, and returns the shifted data, and both tracks overloaid on top of each other. 
+    """
     shifted_data = torchaudio.functional.pitch_shift(data, sr, interval)
     overlaid_data = 0.5*(data + shifted_data)
 
@@ -26,6 +33,9 @@ def gen_overlaid_data(interval, data, sr):
 
 
 class ESMUC_Dataset_Isolated(data.UnmixDataset):
+    """
+    The isolated sections from the ESMUC dataset
+    """
     def __init__(
         self,
         root: Union[Path, str],
@@ -53,6 +63,9 @@ class ESMUC_Dataset_Isolated(data.UnmixDataset):
 
     
     def __getitem__(self, index: int) -> Any:
+        """
+        Picks a 5 second interval at random, and a random pitch shift, and overlays the two
+        """
         file = self.matching_files[index]
         info = data.load_info(file)      
         audio, sr = data.load_audio(file)

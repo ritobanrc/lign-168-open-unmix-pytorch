@@ -67,7 +67,10 @@ class OpenUnmix(nn.Module):
         #    batch_first=False,
         #    dropout=0.4 if nb_layers > 1 else 0,
         #)
-        self.transformer = torch.nn.Transformer(d_model=hidden_size, batch_first=False)
+        encoder_layer = nn.TransformerEncoderLayer(d_model=512, nhead=8)
+        self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=3)
+
+
 
         fc2_hiddensize = hidden_size * 2
         self.fc2 = Linear(in_features=fc2_hiddensize, out_features=hidden_size, bias=False)
@@ -115,9 +118,6 @@ class OpenUnmix(nn.Module):
             Tensor: filtered spectrogram of shape
                 `(nb_samples, nb_channels, nb_bins, nb_frames)`
         """
-        print(x, x.shape)
-        print(self.input_mean, self.input_mean.shape)
-
         # permute so that batch is last for lstm
         x = x.permute(3, 0, 1, 2)
         # get current spectrogram shape
@@ -140,11 +140,9 @@ class OpenUnmix(nn.Module):
         # squash range ot [-1, 1]
         x = torch.tanh(x)
 
-        print(x, x.shape)
         # apply 3-layers of stacked LSTM
         # lstm_out = self.lstm(x)
-        transformer_out = self.transformer(x)
-        print(transformer_out, transformer_out.shape)
+        transformer_out = self.transformer_encoder(x)
     
 
         # lstm skip connection
@@ -265,7 +263,6 @@ class Separator(nn.Module):
         # (nb_samples, nb_channels, nb_bins, nb_frames, 2)
         mix_stft = self.stft(audio)
         X = self.complexnorm(mix_stft)
-        print(mix_stft.shape, X.shape)
 
         # initializing spectrograms variable
         spectrograms = torch.zeros(X.shape + (nb_sources,), dtype=audio.dtype, device=X.device)

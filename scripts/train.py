@@ -90,7 +90,7 @@ def main():
     parser.add_argument(
         "--target",
         type=str,
-        default="lowervoice",
+        default="lowervoice-transformer",
         help="target source (will be passed to the dataset)",
     )
 
@@ -198,7 +198,7 @@ def main():
     )
 
     args, _ = parser.parse_known_args()
-    # args.checkpoint = "./open-unmix/"
+    args.checkpoint = "./open-unmix/"
 
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     print("Using GPU:", use_cuda)
