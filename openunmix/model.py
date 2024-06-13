@@ -54,19 +54,20 @@ class OpenUnmix(nn.Module):
 
         self.bn1 = BatchNorm1d(hidden_size)
 
-        if unidirectional:
-            lstm_hidden_size = hidden_size
-        else:
-            lstm_hidden_size = hidden_size // 2
+        #if unidirectional:
+        #    lstm_hidden_size = hidden_size
+        #else:
+        #    lstm_hidden_size = hidden_size // 2
 
-        self.lstm = LSTM(
-            input_size=hidden_size,
-            hidden_size=lstm_hidden_size,
-            num_layers=nb_layers,
-            bidirectional=not unidirectional,
-            batch_first=False,
-            dropout=0.4 if nb_layers > 1 else 0,
-        )
+        #self.lstm = LSTM(
+        #    input_size=hidden_size,
+        #    hidden_size=lstm_hidden_size,
+        #    num_layers=nb_layers,
+        #    bidirectional=not unidirectional,
+        #    batch_first=False,
+        #    dropout=0.4 if nb_layers > 1 else 0,
+        #)
+        self.transformer = torch.nn.Transformer(d_model=hidden_size, batch_first=False)
 
         fc2_hiddensize = hidden_size * 2
         self.fc2 = Linear(in_features=fc2_hiddensize, out_features=hidden_size, bias=False)
@@ -114,6 +115,8 @@ class OpenUnmix(nn.Module):
             Tensor: filtered spectrogram of shape
                 `(nb_samples, nb_channels, nb_bins, nb_frames)`
         """
+        print(x, x.shape)
+        print(self.input_mean, self.input_mean.shape)
 
         # permute so that batch is last for lstm
         x = x.permute(3, 0, 1, 2)
@@ -137,11 +140,15 @@ class OpenUnmix(nn.Module):
         # squash range ot [-1, 1]
         x = torch.tanh(x)
 
+        print(x, x.shape)
         # apply 3-layers of stacked LSTM
-        lstm_out = self.lstm(x)
+        # lstm_out = self.lstm(x)
+        transformer_out = self.transformer(x)
+        print(transformer_out, transformer_out.shape)
+    
 
         # lstm skip connection
-        x = torch.cat([x, lstm_out[0]], -1)
+        x = torch.cat([x, transformer_out], -1)
 
         # first dense stage + batch norm
         x = self.fc2(x.reshape(-1, x.shape[-1]))
@@ -258,6 +265,7 @@ class Separator(nn.Module):
         # (nb_samples, nb_channels, nb_bins, nb_frames, 2)
         mix_stft = self.stft(audio)
         X = self.complexnorm(mix_stft)
+        print(mix_stft.shape, X.shape)
 
         # initializing spectrograms variable
         spectrograms = torch.zeros(X.shape + (nb_sources,), dtype=audio.dtype, device=X.device)
