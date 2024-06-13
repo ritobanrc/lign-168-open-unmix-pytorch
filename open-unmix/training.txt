@@ -1,0 +1,87 @@
+Training data before resuming from checkpoint: 
+
+>
+/lign-168-open-unmix-pytorch/open-unmix/
+Name
+Modified
+File Size
+
+importlib.reload(train)
+importlib.reload(model)
+importlib.reload(our_data)
+
+<module 'openunmix.our_data' from '/home/jovyan/lign-168-open-unmix-pytorch/openunmix/our_data.py'>
+
+train.main()
+
+Using GPU: True
+
+Compute dataset statistics: 100%|██████████| 71/71 [05:38<00:00,  4.77s/it]
+Training epoch:   0%|          | 0/1000 [00:00<?, ?it/s]
+  0%|          | 0/5 [00:00<?, ?it/s]
+Training batch:   0%|          | 0/5 [01:10<?, ?it/s]
+Training batch:   0%|          | 0/5 [01:10<?, ?it/s, loss=3.890]
+Training batch:  20%|██        | 1/5 [01:10<04:40, 70.21s/it, loss=3.890]
+Training batch:  20%|██        | 1/5 [03:10<04:40, 70.21s/it, loss=3.890]
+Training batch:  20%|██        | 1/5 [03:10<04:40, 70.21s/it, loss=6.371]
+Training batch:  40%|████      | 2/5 [03:10<04:58, 99.43s/it, loss=6.371]
+Training batch:  40%|████      | 2/5 [04:58<04:58, 99.43s/it, loss=6.371]
+Training batch:  40%|████      | 2/5 [04:58<04:58, 99.43s/it, loss=5.842]
+Training batch:  60%|██████    | 3/5 [04:58<03:27, 103.57s/it, loss=5.842]
+Training batch:  60%|██████    | 3/5 [06:36<03:27, 103.57s/it, loss=5.842]
+Training batch:  60%|██████    | 3/5 [06:36<03:27, 103.57s/it, loss=4.771]
+Training batch:  80%|████████  | 4/5 [06:36<01:41, 101.37s/it, loss=4.771]
+Training batch:  80%|████████  | 4/5 [07:44<01:41, 101.37s/it, loss=4.771]
+Training batch:  80%|████████  | 4/5 [07:44<01:41, 101.37s/it, loss=4.313]
+Training batch: 100%|██████████| 5/5 [07:44<00:00, 92.88s/it, loss=4.313] 
+Training epoch:   0%|          | 1/1000 [17:01<283:21:24, 1021.11s/it, train_loss=4.31, val_loss=138]
+  0%|          | 0/5 [00:00<?, ?it/s]
+Training batch:   0%|          | 0/5 [01:50<?, ?it/s]
+Training batch:   0%|          | 0/5 [01:50<?, ?it/s, loss=2.258]
+Training batch:  20%|██        | 1/5 [01:50<07:23, 110.92s/it, loss=2.258]
+Training batch:  20%|██        | 1/5 [03:40<07:23, 110.92s/it, loss=2.258]
+Training batch:  20%|██        | 1/5 [03:40<07:23, 110.92s/it, loss=2.010]
+Training batch:  40%|████      | 2/5 [03:40<05:31, 110.34s/it, loss=2.010]
+Training batch:  40%|████      | 2/5 [04:22<05:31, 110.34s/it, loss=2.010]
+Training batch:  40%|████      | 2/5 [04:22<05:31, 110.34s/it, loss=1.901]
+Training batch:  60%|██████    | 3/5 [04:22<02:38, 79.13s/it, loss=1.901] 
+Training batch:  60%|██████    | 3/5 [05:37<02:38, 79.13s/it, loss=1.901]
+Training batch:  60%|██████    | 3/5 [05:37<02:38, 79.13s/it, loss=2.130]
+Training batch:  80%|████████  | 4/5 [05:37<01:17, 77.20s/it, loss=2.130]
+Training batch:  80%|████████  | 4/5 [06:18<01:17, 77.20s/it, loss=2.130]
+Training batch:  80%|████████  | 4/5 [06:18<01:17, 77.20s/it, loss=2.326]
+Training batch: 100%|██████████| 5/5 [06:18<00:00, 75.74s/it, loss=2.326]
+Training epoch:   0%|          | 2/1000 [33:37<279:01:55, 1006.53s/it, train_loss=2.33, val_loss=14.5]
+  0%|          | 0/5 [00:00<?, ?it/s]
+Training batch:   0%|          | 0/5 [02:59<?, ?it/s]
+Training batch:   0%|          | 0/5 [02:59<?, ?it/s, loss=1.611]
+Training batch:  20%|██        | 1/5 [02:59<11:59, 179.86s/it, loss=1.611]
+Training batch:  20%|██        | 1/5 [04:20<11:59, 179.86s/it, loss=1.611]
+Training batch:  20%|██        | 1/5 [04:20<11:59, 179.86s/it, loss=1.688]
+Training batch:  40%|████      | 2/5 [04:20<06:04, 121.40s/it, loss=1.688]
+Training batch:  40%|████      | 2/5 [06:07<06:04, 121.40s/it, loss=1.688]
+Training batch:  40%|████      | 2/5 [06:07<06:04, 121.40s/it, loss=1.470]
+Training batch:  60%|██████    | 3/5 [06:07<03:50, 115.11s/it, loss=1.470]
+Training batch:  60%|██████    | 3/5 [08:20<03:50, 115.11s/it, loss=1.470]
+Training batch:  60%|██████    | 3/5 [08:20<03:50, 115.11s/it, loss=1.367]
+Training batch:  80%|████████  | 4/5 [08:20<02:01, 121.82s/it, loss=1.367]
+Training batch:  80%|████████  | 4/5 [08:31<02:01, 121.82s/it, loss=1.367]
+Training batch:  80%|████████  | 4/5 [08:31<02:01, 121.82s/it, loss=1.330]
+Training batch: 100%|██████████| 5/5 [08:31<00:00, 102.25s/it, loss=1.330]
+Training epoch:   0%|          | 3/1000 [52:36<295:29:23, 1066.96s/it, train_loss=1.33, val_loss=3.39]
+  0%|          | 0/5 [00:00<?, ?it/s]
+Training batch:   0%|          | 0/5 [01:26<?, ?it/s]
+Training batch:   0%|          | 0/5 [01:26<?, ?it/s, loss=2.947]
+Training batch:  20%|██        | 1/5 [01:26<05:47, 86.81s/it, loss=2.947]
+Training batch:  20%|██        | 1/5 [04:58<05:47, 86.81s/it, loss=2.947]
+Training batch:  20%|██        | 1/5 [04:58<05:47, 86.81s/it, loss=1.970]
+Training batch:  40%|████      | 2/5 [04:58<08:00, 160.11s/it, loss=1.970]
+Training batch:  40%|████      | 2/5 [06:31<08:00, 160.11s/it, loss=1.970]
+Training batch:  40%|████      | 2/5 [06:31<08:00, 160.11s/it, loss=1.872]
+Training batch:  60%|██████    | 3/5 [06:31<04:18, 129.40s/it, loss=1.872]
+Training batch:  60%|██████    | 3/5 [06:59<04:18, 129.40s/it, loss=1.872]
+Training batch:  60%|██████    | 3/5 [07:00<04:18, 129.40s/it, loss=1.561]
+Training batch:  80%|████████  | 4/5 [07:00<01:29, 89.74s/it, loss=1.561] 
+Training batch:  80%|████████  | 4/5 [08:09<01:29, 89.74s/it, loss=1.561]
+Training batch:  80%|████████  | 4/5 [08:09<01:29, 89.74s/it, loss=1.370]
+Training batch: 100%|██████████| 5/5 [08:09<00:00, 97.88s/it, loss=1.370]

@@ -1,0 +1,45 @@
+{
+    "args": {
+        "bandwidth": 16000,
+        "batch_size": 16,
+        "checkpoint": null,
+        "dataset": "musdb",
+        "debug": false,
+        "epochs": 1000,
+        "hidden_size": 512,
+        "lr": 0.001,
+        "lr_decay_gamma": 0.3,
+        "lr_decay_patience": 80,
+        "model": null,
+        "nb_channels": 1,
+        "nb_workers": 0,
+        "nfft": 4096,
+        "nhop": 1024,
+        "no_cuda": false,
+        "output": "open-unmix",
+        "patience": 140,
+        "quiet": false,
+        "root": null,
+        "seed": 42,
+        "seq_dur": 6.0,
+        "target": "vocals",
+        "unidirectional": false,
+        "weight_decay": 1e-05
+    },
+    "best_epoch": 2,
+    "best_loss": 0.4285750091075897,
+    "commit": "1964c14",
+    "epochs_trained": 2,
+    "num_bad_epochs": 0,
+    "train_loss_history": [
+        0.8640503883361816,
+        1.279426097869873
+    ],
+    "train_time_history": [
+        5.341311693191528
+    ],
+    "valid_loss_history": [
+        0.45676401257514954,
+        0.4285750091075897
+    ]
+}

@@ -9,6 +9,8 @@ from torch.nn import LSTM, BatchNorm1d, Linear, Parameter
 from .filtering import wiener
 from .transforms import make_filterbanks, ComplexNorm
 
+use_lstm = True
+
 
 class OpenUnmix(nn.Module):
     """OpenUnmix Core spectrogram based separation module.
@@ -54,21 +56,23 @@ class OpenUnmix(nn.Module):
 
         self.bn1 = BatchNorm1d(hidden_size)
 
-        #if unidirectional:
-        #    lstm_hidden_size = hidden_size
-        #else:
-        #    lstm_hidden_size = hidden_size // 2
+        if use_lstm:
+            if unidirectional:
+                lstm_hidden_size = hidden_size
+            else:
+                lstm_hidden_size = hidden_size // 2
 
-        #self.lstm = LSTM(
-        #    input_size=hidden_size,
-        #    hidden_size=lstm_hidden_size,
-        #    num_layers=nb_layers,
-        #    bidirectional=not unidirectional,
-        #    batch_first=False,
-        #    dropout=0.4 if nb_layers > 1 else 0,
-        #)
-        encoder_layer = nn.TransformerEncoderLayer(d_model=512, nhead=8)
-        self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=3)
+            self.lstm = LSTM(
+                input_size=hidden_size,
+                hidden_size=lstm_hidden_size,
+                num_layers=nb_layers,
+                bidirectional=not unidirectional,
+                batch_first=False,
+                dropout=0.4 if nb_layers > 1 else 0,
+            )
+        else:
+            encoder_layer = nn.TransformerEncoderLayer(d_model=512, nhead=8)
+            self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=3)
 
 
 
@@ -141,12 +145,14 @@ class OpenUnmix(nn.Module):
         x = torch.tanh(x)
 
         # apply 3-layers of stacked LSTM
-        # lstm_out = self.lstm(x)
-        transformer_out = self.transformer_encoder(x)
+        if use_lstm:
+            out = self.lstm(x)[0]
+        else:
+            out = self.transformer_encoder(x)
     
 
         # lstm skip connection
-        x = torch.cat([x, transformer_out], -1)
+        x = torch.cat([x, out], -1)
 
         # first dense stage + batch norm
         x = self.fc2(x.reshape(-1, x.shape[-1]))

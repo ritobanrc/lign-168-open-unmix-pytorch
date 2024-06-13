@@ -1,0 +1,62 @@
+{
+    "args": {
+        "bandwidth": 16000,
+        "batch_size": 16,
+        "checkpoint": "./open-unmix/",
+        "dataset": "musdb",
+        "debug": false,
+        "epochs": 1000,
+        "hidden_size": 512,
+        "lr": 0.01,
+        "lr_decay_gamma": 0.3,
+        "lr_decay_patience": 80,
+        "model": null,
+        "nb_channels": 1,
+        "nb_workers": 0,
+        "nfft": 4096,
+        "nhop": 1024,
+        "no_cuda": false,
+        "output": "open-unmix",
+        "patience": 140,
+        "quiet": false,
+        "root": null,
+        "seed": 42,
+        "seq_dur": 6.0,
+        "target": "vocals",
+        "unidirectional": false,
+        "weight_decay": 1e-05
+    },
+    "best_epoch": 5,
+    "best_loss": 0.8454962723694158,
+    "commit": "1964c14",
+    "epochs_trained": 7,
+    "num_bad_epochs": 2,
+    "train_loss_history": [
+        4.313273239135742,
+        2.326345992088318,
+        1.3302133560180665,
+        1.3700659275054932,
+        1.1575854539871215,
+        0.904074764251709,
+        0.7765463590621948,
+        0.9510211825370789
+    ],
+    "train_time_history": [
+        1021.1047029495239,
+        996.3243494033813,
+        1138.8813514709473,
+        692.9795038700104,
+        667.430507183075,
+        807.2418165206909
+    ],
+    "valid_loss_history": [
+        138.46308666748786,
+        14.50596211351369,
+        3.394864904000276,
+        1.5681024235128065,
+        1.1086621540159964,
+        0.8454962723694158,
+        0.9081505610077547,
+        1.0487175852082453
+    ]
+}
